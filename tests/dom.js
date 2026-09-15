@@ -13,3 +13,10 @@ export function loadPage(relativePath) {
   const html = readFileSync(path.join(distDir, relativePath), 'utf-8');
   return cheerio.load(html);
 }
+
+export function classesOf($, scope) {
+  return $(scope)
+    .find('*')
+    .map((_, el) => $(el).attr('class') ?? '')
+    .get();
+}

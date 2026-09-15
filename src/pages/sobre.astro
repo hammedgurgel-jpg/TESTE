@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
+import CredentialBadge from '../components/CredentialBadge.astro';
 ---
 
 <Layout
@@ -19,12 +20,7 @@ import { site } from '../data/site';
   </section>
 
   <section class="container credential">
-    <div class="credential-badge">
-      <p class="eyebrow">RESPONSÁVEL TÉCNICO</p>
-      <h2>{site.responsavelTecnico}</h2>
-      <p class="role">{site.role}</p>
-      <p class="crea">{site.creaPe}</p>
-    </div>
+    <CredentialBadge />
     <p class="credential-copy">
       Toda a responsabilidade técnica dos projetos, laudos e vistorias da {site.name} é assinada
       por um engenheiro registrado no Conselho Regional de Engenharia e Agronomia de Pernambuco
@@ -64,32 +60,6 @@ import { site } from '../data/site';
     gap: 32px;
     align-items: start;
     padding: 32px 32px 48px;
-  }
-  .credential-badge {
-    border: 1px solid var(--line);
-    background: var(--surface);
-    border-radius: 4px;
-    padding: 28px 32px;
-  }
-  .credential-badge h2 {
-    font-family: 'Big Shoulders Display', sans-serif;
-    font-weight: 700;
-    font-size: 24px;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    margin: 0 0 6px;
-  }
-  .role {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin: 0 0 14px;
-  }
-  .crea {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--accent-2);
-    margin: 0;
   }
   .credential-copy {
     font-size: 15px;
