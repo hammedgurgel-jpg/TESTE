@@ -12,27 +12,27 @@ import { placeholderImage } from '../lib/placeholder';
   description="Projetos, laudos técnicos e regularização de AVCB/CLCB junto ao Corpo de Bombeiros para edificações em Petrolina, Juazeiro e região."
 >
   <section class="container hero">
-    <p class="eyebrow">PROJETO E EXECUÇÃO PPCI</p>
-    <h1>Segurança contra incêndio, do projeto à aprovação.</h1>
-    <p class="lede">
+    <p class="eyebrow reveal">PROJETO E EXECUÇÃO PPCI</p>
+    <h1 class="reveal reveal--d2">Segurança contra incêndio, do projeto à aprovação.</h1>
+    <p class="lede reveal reveal--d3">
       A {site.name} elabora projetos de incêndio, laudos técnicos e a obtenção de AVCB/CLCB
       para proprietários, síndicos e arquitetos que precisam regularizar edificações junto
       ao Corpo de Bombeiros em {site.areaDeAtuacao}.
     </p>
-    <a class="btn btn-primary" href={site.whatsappUrl}>Falar no WhatsApp</a>
+    <a class="btn btn-primary reveal reveal--d3" href={site.whatsappUrl}>Falar no WhatsApp</a>
   </section>
 
   <section class="container credential">
-    <p class="eyebrow">CREDENCIAL PROFISSIONAL</p>
-    <CredentialBadge />
+    <p class="eyebrow reveal">CREDENCIAL PROFISSIONAL</p>
+    <CredentialBadge class="reveal" />
   </section>
 
   <section class="container why-us">
-    <p class="eyebrow">POR QUE NOS ESCOLHER</p>
+    <p class="eyebrow reveal">POR QUE NOS ESCOLHER</p>
     <div class="why-list">
       {
         whyUs.map((item) => (
-          <div class="why-item">
+          <div class="why-item reveal">
             <span class="why-number" aria-hidden="true">{item.number}</span>
             <h2>{item.title}</h2>
             <p>{item.description}</p>
@@ -43,10 +43,11 @@ import { placeholderImage } from '../lib/placeholder';
   </section>
 
   <section class="container featured-project">
-    <p class="eyebrow">PROJETO EM DESTAQUE</p>
-    <div class="featured-inner">
+    <p class="eyebrow reveal">PROJETO EM DESTAQUE</p>
+    <div class="featured-inner reveal">
       <img
         class="featured-image"
+        id="featured-image"
         src={placeholderImage(featuredProject.placeholderLabel)}
         alt={featuredProject.alt}
         width="640"
@@ -61,11 +62,11 @@ import { placeholderImage } from '../lib/placeholder';
   </section>
 
   <section class="container gallery">
-    <p class="eyebrow">GALERIA DE PROJETOS</p>
+    <p class="eyebrow reveal">GALERIA DE PROJETOS</p>
     <div class="gallery-grid">
       {
         galleryProjects.map((project) => (
-          <figure class="gallery-item">
+          <figure class="gallery-item reveal" data-tilt>
             <img
               src={placeholderImage(project.placeholderLabel)}
               alt={project.alt}
@@ -80,6 +81,70 @@ import { placeholderImage } from '../lib/placeholder';
     </div>
   </section>
 </Layout>
+
+<script>
+  function prefersReducedMotion(): boolean {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  // Hero is always in view on load — reveal immediately, no observer needed.
+  const heroReveals = document.querySelectorAll<HTMLElement>('.hero .reveal');
+  requestAnimationFrame(() => {
+    heroReveals.forEach((el) => el.classList.add('is-in'));
+  });
+
+  // Below-the-fold sections reveal once scrolled into view, staggered per batch.
+  const scrollReveals = document.querySelectorAll<HTMLElement>(
+    '.credential .reveal, .why-item.reveal, .featured-project .reveal, .gallery .reveal'
+  );
+  let staggerIndex = 0;
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        if (!prefersReducedMotion()) {
+          el.style.transitionDelay = `${(staggerIndex % 4) * 60}ms`;
+          staggerIndex++;
+        }
+        el.classList.add('is-in');
+        revealObserver.unobserve(el);
+      });
+    },
+    { threshold: 0.05, rootMargin: '15% 0px 15% 0px' }
+  );
+  scrollReveals.forEach((el) => revealObserver.observe(el));
+
+  // Subtle scroll parallax on the featured project image.
+  const featuredImage = document.getElementById('featured-image');
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      if (featuredImage && !prefersReducedMotion()) {
+        const y = window.scrollY;
+        featuredImage.style.transform = `translateY(${Math.max(-24, Math.min(24, y * -0.04))}px)`;
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mousemove tilt on gallery cards.
+  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      if (prefersReducedMotion()) return;
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateX(${py * -6}deg) rotateY(${px * 6}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
 
 <style>
   .hero {
