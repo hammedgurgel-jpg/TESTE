@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title="Ancile Engenharia — Sobre o escritório e o responsável técnico"
+  description="Conheça a história da Ancile e o responsável técnico Hammed de Carvalho Gurgel, CREA-PE 182237953-9, atuando em Petrolina, Juazeiro e região."
+>
+  <section class="container intro">
+    <p class="eyebrow">SOBRE</p>
+    <h1>Quem cuida da segurança contra incêndio da sua edificação</h1>
+    <p class="lede">
+      A {site.name} nasceu para dar suporte técnico a proprietários, síndicos e arquitetos que
+      precisam regularizar edificações junto ao Corpo de Bombeiros. Nossa missão é traduzir
+      exigências normativas em projetos, laudos e documentos claros — sem complicar o que já é
+      burocrático — para quem atua em {site.areaDeAtuacao}.
+    </p>
+  </section>
+
+  <section class="container credential">
+    <div class="credential-badge">
+      <p class="eyebrow">RESPONSÁVEL TÉCNICO</p>
+      <h2>{site.responsavelTecnico}</h2>
+      <p class="role">Engenheiro Mecânico</p>
+      <p class="crea">{site.creaPe}</p>
+    </div>
+    <p class="credential-copy">
+      Toda a responsabilidade técnica dos projetos, laudos e vistorias da {site.name} é assinada
+      por um engenheiro registrado no Conselho Regional de Engenharia e Agronomia de Pernambuco
+      (CREA-PE), garantindo validade legal junto ao Corpo de Bombeiros.
+    </p>
+  </section>
+
+  <section class="container area">
+    <p class="eyebrow">ÁREA DE ATUAÇÃO</p>
+    <p class="area-text">{site.areaDeAtuacao}</p>
+  </section>
+</Layout>
+
+<style>
+  .intro {
+    padding: 72px 32px 32px;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 4.4vw, 48px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+  }
+  .lede {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 68ch;
+    margin: 0;
+  }
+  .credential {
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    gap: 32px;
+    align-items: start;
+    padding: 32px 32px 48px;
+  }
+  .credential-badge {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 28px 32px;
+  }
+  .credential-badge h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 6px;
+  }
+  .role {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0 0 14px;
+  }
+  .crea {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent-2);
+    margin: 0;
+  }
+  .credential-copy {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 60ch;
+    margin: 0;
+    align-self: center;
+  }
+  .area {
+    padding: 0 32px 96px;
+  }
+  .area-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--text);
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .credential {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
