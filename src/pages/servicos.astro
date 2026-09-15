@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { services } from '../data/services';
+---
+
+<Layout
+  title="Ancile Engenharia — Serviços de segurança contra incêndio em Petrolina e Juazeiro"
+  description="Conheça os 5 serviços da Ancile: projeto de incêndio, laudo técnico, AVCB/CLCB, consultoria/regularização e vistoria em Petrolina, Juazeiro e região."
+>
+  <section class="container intro">
+    <p class="eyebrow">SERVIÇOS</p>
+    <h1>O que fazemos</h1>
+    <p class="lede">
+      Do projeto técnico à obtenção do documento junto ao Corpo de Bombeiros, cada serviço abaixo
+      cobre uma etapa da regularização de segurança contra incêndio da sua edificação.
+    </p>
+  </section>
+
+  <section class="container services-list">
+    {
+      services.map((service) => (
+        <article class="service" id={service.slug}>
+          <h2>{service.name}</h2>
+          <p>{service.description}</p>
+        </article>
+      ))
+    }
+  </section>
+</Layout>
+
+<style>
+  .intro {
+    padding: 72px 32px 32px;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 4.8vw, 56px);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+  }
+  .lede {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .services-list {
+    display: grid;
+    gap: 20px;
+    padding: 0 32px 96px;
+  }
+  .service {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 28px 32px;
+  }
+  .service h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 12px;
+  }
+  .service p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 68ch;
+    margin: 0;
+  }
+</style>

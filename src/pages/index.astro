@@ -1,0 +1,288 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+import CredentialBadge from '../components/CredentialBadge.astro';
+import { whyUs } from '../data/whyUs';
+import { featuredProject, galleryProjects } from '../data/projects';
+import { placeholderImage } from '../lib/placeholder';
+---
+
+<Layout
+  title="Ancile Engenharia — Segurança contra incêndio em Petrolina e Juazeiro"
+  description="Projetos, laudos técnicos e regularização de AVCB/CLCB junto ao Corpo de Bombeiros para edificações em Petrolina, Juazeiro e região."
+>
+  <section class="container hero">
+    <p class="eyebrow reveal">PROJETO E EXECUÇÃO PPCI</p>
+    <h1 class="reveal reveal--d2">Segurança contra incêndio, do projeto à aprovação.</h1>
+    <p class="lede reveal reveal--d3">
+      A {site.name} elabora projetos de incêndio, laudos técnicos e a obtenção de AVCB/CLCB
+      para proprietários, síndicos e arquitetos que precisam regularizar edificações junto
+      ao Corpo de Bombeiros em {site.areaDeAtuacao}.
+    </p>
+    <a class="btn btn-primary reveal reveal--d3" href={site.whatsappUrl}>Falar no WhatsApp</a>
+  </section>
+
+  <section class="container credential">
+    <p class="eyebrow reveal">CREDENCIAL PROFISSIONAL</p>
+    <CredentialBadge class="reveal" />
+  </section>
+
+  <section class="container why-us">
+    <p class="eyebrow reveal">POR QUE NOS ESCOLHER</p>
+    <div class="why-list">
+      {
+        whyUs.map((item) => (
+          <div class="why-item reveal">
+            <span class="why-number" aria-hidden="true">{item.number}</span>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container featured-project">
+    <p class="eyebrow reveal">PROJETO EM DESTAQUE</p>
+    <div class="featured-inner reveal">
+      <img
+        class="featured-image"
+        id="featured-image"
+        src={placeholderImage(featuredProject.placeholderLabel)}
+        alt={featuredProject.alt}
+        width="640"
+        height="400"
+        loading="lazy"
+      />
+      <div class="featured-info">
+        <h2>{featuredProject.title}</h2>
+        <p class="featured-description">{featuredProject.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container gallery">
+    <p class="eyebrow reveal">GALERIA DE PROJETOS</p>
+    <div class="gallery-grid">
+      {
+        galleryProjects.map((project) => (
+          <figure class="gallery-item reveal" data-tilt>
+            <img
+              src={placeholderImage(project.placeholderLabel)}
+              alt={project.alt}
+              width="640"
+              height="400"
+              loading="lazy"
+            />
+            <figcaption class="gallery-caption">{project.category}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function prefersReducedMotion(): boolean {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  // Hero is always in view on load — reveal immediately, no observer needed.
+  const heroReveals = document.querySelectorAll<HTMLElement>('.hero .reveal');
+  requestAnimationFrame(() => {
+    heroReveals.forEach((el) => el.classList.add('is-in'));
+  });
+
+  // Below-the-fold sections reveal once scrolled into view, staggered per batch.
+  const scrollReveals = document.querySelectorAll<HTMLElement>(
+    '.credential .reveal, .why-item.reveal, .featured-project .reveal, .gallery .reveal'
+  );
+  let staggerIndex = 0;
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        if (!prefersReducedMotion()) {
+          el.style.transitionDelay = `${(staggerIndex % 4) * 60}ms`;
+          staggerIndex++;
+        }
+        el.classList.add('is-in');
+        revealObserver.unobserve(el);
+      });
+    },
+    { threshold: 0.05, rootMargin: '15% 0px 15% 0px' }
+  );
+  scrollReveals.forEach((el) => revealObserver.observe(el));
+
+  // Subtle scroll parallax on the featured project image.
+  const featuredImage = document.getElementById('featured-image');
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      if (featuredImage && !prefersReducedMotion()) {
+        const y = window.scrollY;
+        featuredImage.style.transform = `translateY(${Math.max(-24, Math.min(24, y * -0.04))}px)`;
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mousemove tilt on gallery cards.
+  document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
+    card.addEventListener('mousemove', (e) => {
+      if (prefersReducedMotion()) return;
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(600px) rotateX(${py * -6}deg) rotateY(${px * 6}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+
+<style>
+  .hero {
+    padding: 88px 32px 96px;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: clamp(40px, 5.4vw, 68px);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+  }
+  .lede {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 46ch;
+    margin: 0 0 30px;
+  }
+  .credential {
+    padding: 0 32px 96px;
+  }
+
+  .why-us {
+    padding: 0 32px 96px;
+  }
+  .why-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .why-item {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 28px 26px;
+  }
+  .why-number {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-2);
+    letter-spacing: 0.06em;
+    margin-bottom: 18px;
+  }
+  .why-item h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 10px;
+  }
+  .why-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 800px) {
+    .why-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .featured-project {
+    padding: 0 32px 96px;
+  }
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 24px;
+  }
+  .featured-image {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    display: block;
+  }
+  .featured-info h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 12px;
+  }
+  .featured-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .featured-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .gallery {
+    padding: 0 32px 96px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .gallery-item {
+    margin: 0;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--line);
+  }
+  .gallery-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 16px;
+    margin: 0;
+  }
+</style>
