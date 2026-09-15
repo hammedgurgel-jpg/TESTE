@@ -1,0 +1,23 @@
+{
+  "name": "ancile-site",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": "^20.3.0 || >=22.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "astro build && node --test tests/"
+  },
+  "dependencies": {
+    "astro": "^5.1.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "cheerio": "^1.0.0",
+    "typescript": "^5.7.3"
+  }
+}

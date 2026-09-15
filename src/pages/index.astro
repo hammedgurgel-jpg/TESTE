@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title="Ancile Engenharia — Segurança contra incêndio em Petrolina e Juazeiro"
+  description="Projetos, laudos técnicos e regularização de AVCB/CLCB junto ao Corpo de Bombeiros para edificações em Petrolina, Juazeiro e região."
+>
+  <section class="container placeholder">
+    <p class="eyebrow">PROJETO E EXECUÇÃO PPCI</p>
+    <h1>Segurança contra incêndio, do projeto à aprovação.</h1>
+    <p class="lede">
+      Site em construção. Em breve, conteúdo completo sobre os serviços da {site.name}.
+    </p>
+    <a class="btn btn-primary" href={site.whatsappUrl}>Falar no WhatsApp</a>
+  </section>
+</Layout>
+
+<style>
+  .placeholder {
+    padding: 88px 32px 96px;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-2);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: clamp(40px, 5.4vw, 68px);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 0 0 22px;
+  }
+  .lede {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 46ch;
+    margin: 0 0 30px;
+  }
+</style>
