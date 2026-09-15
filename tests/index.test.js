@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadPage } from './dom.js';
+import { site } from '../src/data/site.ts';
 
 test('hero da Início comunica o serviço (PPCI/incêndio) e o público-alvo', () => {
   const $ = loadPage('index.html');
@@ -13,7 +14,7 @@ test('hero da Início comunica o serviço (PPCI/incêndio) e o público-alvo', (
 
 test('CTA de WhatsApp está na primeira dobra (dentro do hero)', () => {
   const $ = loadPage('index.html');
-  const heroWhatsapp = $('.hero a[href*="wa.me/5587988737929"]');
+  const heroWhatsapp = $(`.hero a[href*="${site.whatsappUrl}"]`);
 
   assert.equal(heroWhatsapp.length > 0, true);
 });

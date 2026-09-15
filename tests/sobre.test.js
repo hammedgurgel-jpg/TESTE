@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadPage, classesOf } from './dom.js';
+import { loadPage, classesOf, assertDistinctMeta } from './dom.js';
 
 test('página Sobre existe e tem HTML válido', () => {
   const $ = loadPage('sobre/index.html');
@@ -48,15 +48,5 @@ test('Sobre tem title e meta description próprios, em pt-BR, distintos da Iníc
   const $sobre = loadPage('sobre/index.html');
   const $index = loadPage('index.html');
 
-  const title = $sobre('title').text().trim();
-  const description = ($sobre('meta[name="description"]').attr('content') ?? '').trim();
-
-  assert.equal(title.length > 0, true);
-  assert.equal(description.length > 0, true);
-  assert.notEqual(title, $index('title').text().trim());
-  assert.notEqual(
-    description,
-    ($index('meta[name="description"]').attr('content') ?? '').trim(),
-  );
-  assert.match(title, /Sobre/i);
+  assertDistinctMeta($sobre, $index, /Sobre/i);
 });
