@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
+import { whyUs } from '../data/whyUs';
 ---
 
 <Layout
@@ -30,6 +31,21 @@ import { site } from '../data/site';
         <p class="badge-role">{site.role}</p>
         <p class="badge-crea">{site.creaPe}</p>
       </div>
+    </div>
+  </section>
+
+  <section class="container why-us">
+    <p class="eyebrow">POR QUE NOS ESCOLHER</p>
+    <div class="why-list">
+      {
+        whyUs.map((item) => (
+          <div class="why-item">
+            <span class="why-number" aria-hidden="true">{item.number}</span>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+          </div>
+        ))
+      }
     </div>
   </section>
 </Layout>
@@ -147,6 +163,50 @@ import { site } from '../data/site';
       grid-template-columns: 1fr;
       justify-items: center;
       text-align: center;
+    }
+  }
+
+  .why-us {
+    padding: 0 32px 96px;
+  }
+  .why-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .why-item {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 28px 26px;
+  }
+  .why-number {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-2);
+    letter-spacing: 0.06em;
+    margin-bottom: 18px;
+  }
+  .why-item h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 10px;
+  }
+  .why-item p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 800px) {
+    .why-list {
+      grid-template-columns: 1fr;
     }
   }
 </style>
