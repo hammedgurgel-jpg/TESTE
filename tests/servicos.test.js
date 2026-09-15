@@ -15,7 +15,7 @@ const contextPath = path.resolve(
 function readServiceNamesFromContext() {
   const content = readFileSync(contextPath, 'utf-8');
   const sectionMatch = content.match(
-    /## Servi[çc]os oferecidos pelo escrit[óo]rio\n([\s\S]*)/,
+    /## Servi[çc]os oferecidos pelo escrit[óo]rio\r?\n([\s\S]*)/,
   );
   assert.ok(sectionMatch, 'esperava encontrar a seção de serviços em CONTEXT.md');
 
