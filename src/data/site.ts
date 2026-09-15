@@ -6,6 +6,7 @@ export const site = {
   whatsappDisplay: '(87) 98873-7929',
   whatsappUrl: `https://wa.me/${whatsappNumber}`,
   responsavelTecnico: 'Hammed de Carvalho Gurgel',
+  role: 'Engenheiro Mecânico',
   creaPe: 'CREA-PE 182237953-9',
   areaDeAtuacao: 'Petrolina, Juazeiro e região',
 };

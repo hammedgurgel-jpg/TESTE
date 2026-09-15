@@ -17,3 +17,18 @@ test('CTA de WhatsApp está na primeira dobra (dentro do hero)', () => {
 
   assert.equal(heroWhatsapp.length > 0, true);
 });
+
+test('Início exibe um badge de credencial/associação profissional em destaque', () => {
+  const $ = loadPage('index.html');
+  const badge = $('.credential-badge');
+
+  assert.equal(badge.length > 0, true);
+});
+
+test('badge de credencial da Início traz nome do responsável técnico e CREA-PE', () => {
+  const $ = loadPage('index.html');
+  const badgeText = $('.credential-badge').text();
+
+  assert.match(badgeText, /Hammed de Carvalho Gurgel/);
+  assert.match(badgeText, /CREA-PE 182237953-9/);
+});
