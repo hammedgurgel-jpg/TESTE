@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadPage, classesOf, assertDistinctMeta } from './dom.js';
+import { navLinks, site } from '../src/data/site.ts';
 
 test('página Sobre existe e tem HTML válido', () => {
   const $ = loadPage('sobre/index.html');
@@ -49,4 +50,23 @@ test('Sobre tem title e meta description próprios, em pt-BR, distintos da Iníc
   const $index = loadPage('index.html');
 
   assertDistinctMeta($sobre, $index, /Sobre/i);
+});
+
+test('nav da Sobre contém os 4 links do menu', () => {
+  const $ = loadPage('sobre/index.html');
+  const toggle = $('.site-nav button.nav-toggle');
+  const menu = $(`#${toggle.attr('aria-controls')}`);
+
+  for (const { label, href } of navLinks) {
+    const link = menu.find('a').filter((_, el) => $(el).text().trim() === label);
+    assert.equal(link.length, 1, `esperava um link "${label}" no menu`);
+    assert.equal(link.attr('href'), href);
+  }
+});
+
+test('nav da Sobre contém o link do WhatsApp', () => {
+  const $ = loadPage('sobre/index.html');
+  const whatsappLink = $(`.site-nav a[href*="${site.whatsappUrl}"]`);
+
+  assert.equal(whatsappLink.length > 0, true);
 });

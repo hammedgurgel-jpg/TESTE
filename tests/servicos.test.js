@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { loadPage, assertDistinctMeta } from './dom.js';
+import { navLinks, site } from '../src/data/site.ts';
 
 const contextPath = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -69,4 +70,23 @@ test('Serviços tem title e meta description próprios, distintos da Início', (
   const $index = loadPage('index.html');
 
   assertDistinctMeta($servicos, $index, /Servi[çc]os/i);
+});
+
+test('nav de Serviços contém os 4 links do menu', () => {
+  const $ = loadPage('servicos/index.html');
+  const toggle = $('.site-nav button.nav-toggle');
+  const menu = $(`#${toggle.attr('aria-controls')}`);
+
+  for (const { label, href } of navLinks) {
+    const link = menu.find('a').filter((_, el) => $(el).text().trim() === label);
+    assert.equal(link.length, 1, `esperava um link "${label}" no menu`);
+    assert.equal(link.attr('href'), href);
+  }
+});
+
+test('nav de Serviços contém o link do WhatsApp', () => {
+  const $ = loadPage('servicos/index.html');
+  const whatsappLink = $(`.site-nav a[href*="${site.whatsappUrl}"]`);
+
+  assert.equal(whatsappLink.length > 0, true);
 });
