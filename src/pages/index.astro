@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
 import { whyUs } from '../data/whyUs';
+import { featuredProject, galleryProjects } from '../data/projects';
+import { placeholderImage } from '../lib/placeholder';
 ---
 
 <Layout
@@ -44,6 +46,44 @@ import { whyUs } from '../data/whyUs';
             <h2>{item.title}</h2>
             <p>{item.description}</p>
           </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="container featured-project">
+    <p class="eyebrow">PROJETO EM DESTAQUE</p>
+    <div class="featured-inner">
+      <img
+        class="featured-image"
+        src={placeholderImage(featuredProject.placeholderLabel)}
+        alt={featuredProject.alt}
+        width="640"
+        height="400"
+        loading="lazy"
+      />
+      <div class="featured-info">
+        <h2>{featuredProject.title}</h2>
+        <p class="featured-description">{featuredProject.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container gallery">
+    <p class="eyebrow">GALERIA DE PROJETOS</p>
+    <div class="gallery-grid">
+      {
+        galleryProjects.map((project) => (
+          <figure class="gallery-item">
+            <img
+              src={placeholderImage(project.placeholderLabel)}
+              alt={project.alt}
+              width="640"
+              height="400"
+              loading="lazy"
+            />
+            <figcaption class="gallery-caption">{project.category}</figcaption>
+          </figure>
         ))
       }
     </div>
@@ -208,5 +248,77 @@ import { whyUs } from '../data/whyUs';
     .why-list {
       grid-template-columns: 1fr;
     }
+  }
+
+  .featured-project {
+    padding: 0 32px 96px;
+  }
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    padding: 24px;
+  }
+  .featured-image {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    display: block;
+  }
+  .featured-info h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    margin: 0 0 12px;
+  }
+  .featured-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .featured-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .gallery {
+    padding: 0 32px 96px;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .gallery-item {
+    margin: 0;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--line);
+  }
+  .gallery-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 14px 16px;
+    margin: 0;
   }
 </style>
