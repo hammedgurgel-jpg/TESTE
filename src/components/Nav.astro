@@ -5,7 +5,18 @@ import { navLinks, site } from '../data/site';
 <nav class="site-nav">
   <div class="container nav-inner">
     <a class="brand" href="/">Ancile<span>·</span>Eng.</a>
-    <div class="navlinks">
+    <button
+      type="button"
+      class="nav-toggle"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Abrir menu"
+    >
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+    <div class="navlinks" id="nav-menu">
       {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
     </div>
     <a class="navcta" href={site.whatsappUrl}>WhatsApp</a>
@@ -58,4 +69,50 @@ import { navLinks, site } from '../data/site';
     border-radius: 3px;
     text-decoration: none;
   }
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    order: -1;
+  }
+  .nav-toggle-bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    border-radius: 1px;
+  }
+  @media (max-width: 720px) {
+    .nav-toggle {
+      display: flex;
+    }
+    .navlinks {
+      display: none;
+      order: 3;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+    .navlinks.is-open {
+      display: flex;
+    }
+  }
 </style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const menu = document.getElementById('nav-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('is-open') ?? false;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Fechar menu' : 'Abrir menu');
+  });
+</script>
